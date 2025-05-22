@@ -1,7 +1,7 @@
 import { CSSHelper } from "@supernovaio/export-utils";
 import type { Token, TypographyToken, TypographyTokenValue, TextCase, TextDecoration } from "@supernovaio/sdk-exporters";
 import { TokenType } from "@supernovaio/sdk-exporters";
-import { exportConfiguration } from ".."; 
+import { exportConfiguration } from "..";
 
 export type TokenRecord = Record<string, string | number>;
 
@@ -41,50 +41,24 @@ export function createTypographyObject(
   const typographyToken = token as TypographyToken;
   const typographyValue = typographyToken.value as TypographyTokenValue;
 
+  const cssDimensionOptions = {
+    allowReferences: exportConfiguration.useReferences,
+    decimals: exportConfiguration.colorPrecision,
+    colorFormat: exportConfiguration.colorFormat,
+    forceRemUnit: exportConfiguration.forceRemUnit,
+    remBase: exportConfiguration.remBase,
+    tokenToVariableRef: () => ''
+  };
+
   return {
     fontFamily: typographyValue.fontFamily.text,
     fontWeight: typographyValue.fontWeight.text,
-    fontSize: CSSHelper.dimensionTokenValueToCSS(typographyValue.fontSize, mappedTokens, {
-      allowReferences: exportConfiguration.useReferences,
-      decimals: exportConfiguration.colorPrecision,
-      colorFormat: exportConfiguration.colorFormat,
-      forceRemUnit: exportConfiguration.forceRemUnit,
-      remBase: exportConfiguration.remBase,
-      tokenToVariableRef: () => '' 
-    }),
-    lineHeight: typographyValue.lineHeight ? CSSHelper.dimensionTokenValueToCSS(typographyValue.lineHeight, mappedTokens, {
-      allowReferences: exportConfiguration.useReferences,
-      decimals: exportConfiguration.colorPrecision,
-      colorFormat: exportConfiguration.colorFormat,
-      forceRemUnit: exportConfiguration.forceRemUnit,
-      remBase: exportConfiguration.remBase,
-      tokenToVariableRef: () => ''
-    }) : "0px",
-    letterSpacing: typographyValue.letterSpacing ? CSSHelper.dimensionTokenValueToCSS(typographyValue.letterSpacing, mappedTokens, {
-      allowReferences: exportConfiguration.useReferences,
-      decimals: exportConfiguration.colorPrecision,
-      colorFormat: exportConfiguration.colorFormat,
-      forceRemUnit: exportConfiguration.forceRemUnit,
-      remBase: exportConfiguration.remBase,
-      tokenToVariableRef: () => ''
-    }) : "0px",
+    fontSize: CSSHelper.dimensionTokenValueToCSS(typographyValue.fontSize, mappedTokens, cssDimensionOptions),
+    lineHeight: typographyValue.lineHeight ? CSSHelper.dimensionTokenValueToCSS(typographyValue.lineHeight, mappedTokens, cssDimensionOptions) : "0px",
+    letterSpacing: typographyValue.letterSpacing ? CSSHelper.dimensionTokenValueToCSS(typographyValue.letterSpacing, mappedTokens, cssDimensionOptions) : "0px",
     textDecoration: CSSHelper.textDecorationToCSS(typographyValue.textDecoration.value as TextDecoration),
     textCase: CSSHelper.textCaseToCSS(typographyValue.textCase.value as TextCase),
-    paragraphIndent: typographyValue.paragraphIndent ? CSSHelper.dimensionTokenValueToCSS(typographyValue.paragraphIndent, mappedTokens, {
-      allowReferences: exportConfiguration.useReferences,
-      decimals: exportConfiguration.colorPrecision,
-      colorFormat: exportConfiguration.colorFormat,
-      forceRemUnit: exportConfiguration.forceRemUnit,
-      remBase: exportConfiguration.remBase,
-      tokenToVariableRef: () => ''
-    }) : "0px",
-    paragraphSpacing: typographyValue.paragraphSpacing ? CSSHelper.dimensionTokenValueToCSS(typographyValue.paragraphSpacing, mappedTokens, {
-      allowReferences: exportConfiguration.useReferences,
-      decimals: exportConfiguration.colorPrecision,
-      colorFormat: exportConfiguration.colorFormat,
-      forceRemUnit: exportConfiguration.forceRemUnit,
-      remBase: exportConfiguration.remBase,
-      tokenToVariableRef: () => ''
-    }) : "0px"
+    paragraphIndent: typographyValue.paragraphIndent ? CSSHelper.dimensionTokenValueToCSS(typographyValue.paragraphIndent, mappedTokens, cssDimensionOptions) : "0px",
+    paragraphSpacing: typographyValue.paragraphSpacing ? CSSHelper.dimensionTokenValueToCSS(typographyValue.paragraphSpacing, mappedTokens, cssDimensionOptions) : "0px"
   };
 } 
